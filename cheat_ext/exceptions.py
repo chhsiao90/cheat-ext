@@ -1,0 +1,2 @@
+class CheatExtException(Exception):
+    pass
