@@ -15,4 +15,4 @@ class TestUtils(unittest.TestCase):
             get_sheet_path("chhsiao90/cheat-ext"),
             os.path.join(
                 os.path.expanduser("~"),
-                ".cheat", "chhsiao90_cheat-ext"))
+                ".cheat", ".ext", "chhsiao90_cheat-ext"))

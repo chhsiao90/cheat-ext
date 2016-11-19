@@ -10,8 +10,8 @@ def get_github_url(repo):
 
 def get_sheet_path(repo):
     return os.path.join(
-        os.path.expanduser("~"),
-        ".cheat",
+        get_cheat_path(),
+        ".ext",
         repo.replace("/", "_"))
 
 
