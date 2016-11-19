@@ -1,4 +1,7 @@
 # cheat-ext
+[![Build Status](https://travis-ci.org/chhsiao90/cheat-ext.svg?branch=master)](https://travis-ci.org/chhsiao90/cheat-ext)
+[![Coverage Status](https://coveralls.io/repos/github/chhsiao90/cheat-ext/badge.svg?branch=master)](https://coveralls.io/github/chhsiao90/cheat-ext?branch=master)
+  
 An extension of [cheat](https://github.com/chrisallenlane/cheat)
 Provide simple methodology to extends cheatsheets
 
