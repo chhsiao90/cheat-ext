@@ -3,7 +3,7 @@ import argparse
 from cheat_ext.installer import (
     install, upgrade, remove
 )
-from cheat_ext.linker import link
+from cheat_ext.linker import link, unlink
 
 
 def _install(args):
@@ -13,9 +13,11 @@ def _install(args):
 
 def _upgrade(args):
     upgrade(args.repository)
+    link(args.repository)
 
 
 def _remove(args):
+    unlink(args.repository)
     remove(args.repository)
 
 

@@ -26,11 +26,11 @@ def upgrade(repo):
             "%s hadn't been installed yet at %s" % (repo, sheet_dir))
 
     try:
-        repo = Repo(sheet_dir)
+        git_repo = Repo(sheet_dir)
     except InvalidGitRepositoryError:
         raise CheatExtException("Not a git directory at %s" % sheet_dir)
     else:
-        repo.remote().pull()
+        git_repo.remote().pull()
         print("%s is upgraded successfully" % repo)
 
 

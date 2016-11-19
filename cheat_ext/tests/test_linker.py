@@ -5,7 +5,7 @@ from tempfile import mkdtemp
 import unittest
 
 from cheat_ext.exceptions import CheatExtException
-from cheat_ext.linker import link
+from cheat_ext.linker import link, unlink
 
 
 class TestLinker(unittest.TestCase):
@@ -22,32 +22,37 @@ class TestLinker(unittest.TestCase):
         self.get_sheet_path = patch("cheat_ext.linker.get_sheet_path").start()
         self.get_sheet_path.return_value = self.repo_dir
 
+    def _make_unlink_sheets(self, sheets):
+        for sheet in sheets:
+            open(os.path.join(self.repo_dir, sheet), "w").close()
+
+    def _make_link_sheets(self, sheets):
+        for sheet in sheets:
+            os.symlink(
+                os.path.join(self.repo_dir, sheet),
+                os.path.join(self.cheat_dir, sheet))
+
     def test_link(self):
-        files = ["openssl", "curl", "top"]
-        for f in files:
-            open(os.path.join(self.repo_dir, f), "w").close()
+        sheets = ["openssl", "curl", "top"]
+        self._make_unlink_sheets(sheets)
 
         link("author/repo")
 
-        for f in files:
-            cheat_link = os.path.join(self.cheat_dir, f)
+        for sheet in sheets:
+            cheat_link = os.path.join(self.cheat_dir, sheet)
             self.assertTrue(os.path.islink(cheat_link))
             self.assertEqual(
                 os.readlink(cheat_link),
-                os.path.join(self.repo_dir, f))
-
-        self.get_cheat_path.assert_called_with()
-        self.get_sheet_path.assert_called_with("author/repo")
+                os.path.join(self.repo_dir, sheet))
 
     def test_link_exclude_files(self):
-        files = [".git", "test.py"]
-        for f in files:
-            open(os.path.join(self.repo_dir, f), "w").close()
+        sheets = [".git", "test.py"]
+        self._make_unlink_sheets(sheets)
 
         link("author/repo")
 
-        for f in files:
-            self.assertFalse(os.path.exists(os.path.join(self.cheat_dir, f)))
+        for sheet in sheets:
+            self.assertFalse(os.path.exists(os.path.join(self.cheat_dir, sheet)))
 
     def test_link_exclude_dir(self):
         os.mkdir(os.path.join(self.repo_dir, "src"))
@@ -63,17 +68,31 @@ class TestLinker(unittest.TestCase):
             link("author/repo")
 
     def test_link_with_linked(self):
-        files = ["openssl", "top"]
+        sheets = ["openssl", "top"]
         exist_file = "curl"
-        for f in files + [exist_file]:
-            open(os.path.join(self.repo_dir, f), "w").close()
+
+        self._make_unlink_sheets(sheets + [exist_file])
         open(os.path.join(self.cheat_dir, exist_file), "w").close()
 
         with self.assertRaises(CheatExtException):
             link("author/repo")
 
-        for f in files:
-            self.assertFalse(os.path.exists(os.path.join(self.cheat_dir, f)))
+        for sheet in sheets:
+            self.assertFalse(os.path.exists(os.path.join(self.cheat_dir, sheet)))
 
-        self.get_cheat_path.assert_called_with()
-        self.get_sheet_path.assert_called_with("author/repo")
+    def test_unlink(self):
+        sheets = ["openssl", "curl", "top"]
+
+        self._make_unlink_sheets(sheets)
+        self._make_link_sheets(sheets)
+
+        unlink("author/repo")
+
+        for sheet in sheets:
+            self.assertFalse(os.path.exists(os.path.join(self.cheat_dir, sheet)))
+
+    def test_unlin_failed_when_uninstalled(self):
+        shutil.rmtree(self.repo_dir)
+
+        with self.assertRaises(CheatExtException):
+            unlink("author/repo")
