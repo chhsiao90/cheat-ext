@@ -1,5 +1,8 @@
 [report]
-omit = gviewer/tests/*
+omit =
+    cheat_ext/tests/*
+    cheat_ext/main.py
+    cheat_ext/version.py
 exclude_lines =
     pragma: no cover
     def __repr__

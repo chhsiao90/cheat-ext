@@ -1,3 +1,4 @@
+from git.exc import InvalidGitRepositoryError
 from mock import patch
 import os
 from tempfile import mkdtemp
@@ -44,9 +45,19 @@ class TestInstaller(unittest.TestCase):
 
         self.get_sheet_path.assert_called_with("author/repo")
         self.Repo.assert_called_with(self.repo_dir)
-        self.Repo(self.repo_dir).pull.assert_called_with()
+        self.Repo(self.repo_dir).remote().pull.assert_called_with()
 
     def test_upgrade_failed_with_not_installed(self):
+        with self.assertRaises(CheatExtException):
+            upgrade("author/repo")
+
+        self.get_sheet_path.assert_called_with("author/repo")
+        self.Repo.asesrt_not_called()
+
+    def test_upgrade_failed_with_not_git_dir(self):
+        self.Repo.side_effect = InvalidGitRepositoryError
+        os.mkdir(self.repo_dir)
+
         with self.assertRaises(CheatExtException):
             upgrade("author/repo")
 

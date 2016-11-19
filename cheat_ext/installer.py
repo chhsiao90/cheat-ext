@@ -1,5 +1,6 @@
 from __future__ import print_function
 from git import Repo
+from git.exc import InvalidGitRepositoryError
 import shutil
 import os
 
@@ -24,9 +25,13 @@ def upgrade(repo):
         raise CheatExtException(
             "%s hadn't been installed yet at %s" % (repo, sheet_dir))
 
-    repo = Repo(sheet_dir)
-    repo.pull()
-    print("%s is upgraded successfully" % repo)
+    try:
+        repo = Repo(sheet_dir)
+    except InvalidGitRepositoryError:
+        raise CheatExtException("Not a git directory at %s" % sheet_dir)
+    else:
+        repo.remote().pull()
+        print("%s is upgraded successfully" % repo)
 
 
 def remove(repo):

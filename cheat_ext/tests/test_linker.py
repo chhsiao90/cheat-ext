@@ -61,3 +61,19 @@ class TestLinker(unittest.TestCase):
 
         with self.assertRaises(CheatExtException):
             link("author/repo")
+
+    def test_link_with_linked(self):
+        files = ["openssl", "top"]
+        exist_file = "curl"
+        for f in files + [exist_file]:
+            open(os.path.join(self.repo_dir, f), "w").close()
+        open(os.path.join(self.cheat_dir, exist_file), "w").close()
+
+        with self.assertRaises(CheatExtException):
+            link("author/repo")
+
+        for f in files:
+            self.assertFalse(os.path.exists(os.path.join(self.cheat_dir, f)))
+
+        self.get_cheat_path.assert_called_with()
+        self.get_sheet_path.assert_called_with("author/repo")
