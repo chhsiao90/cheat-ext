@@ -31,7 +31,9 @@ def get_available_sheets_at(sheet_dir):
         return (
             not os.path.isdir(os.path.join(sheet_dir, sheet)) and
             re.match(r"^[a-zA-Z-_]+$", sheet))
-    return list(filter(is_available_sheet, os.listdir(sheet_dir)))
+    sheets = list(filter(is_available_sheet, os.listdir(sheet_dir)))
+    sheets.sort()
+    return sheets
 
 
 def get_sheets_with_state(cheat_dir, sheet_dir, sheets):
