@@ -29,7 +29,7 @@ def ls():
 
     if sheet_dirs:
         print("installed repository:")
-        for sheet in filter(is_git_dir, os.listdir(ext_dir)):
+        for sheet in sheet_dirs:
             print(sheet.replace("_", "/"))
     else:
         print("there is no repository installed")
