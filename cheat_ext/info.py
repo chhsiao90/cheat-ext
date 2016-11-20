@@ -1,8 +1,38 @@
 from __future__ import print_function
+
+from git import Repo
+from git.exc import InvalidGitRepositoryError
 import os
 
 from .exceptions import CheatExtException
-from .utils import get_sheet_path, get_available_sheets_at
+from .utils import (
+    get_ext_path, get_sheet_path, get_available_sheets_at
+)
+
+
+def ls():
+    ext_dir = get_ext_path()
+
+    if not os.path.isdir(ext_dir):
+        print("there is no repository installed")
+        return
+
+    def is_git_dir(sheet):
+        try:
+            Repo(os.path.join(ext_dir, sheet))
+            return True
+        except InvalidGitRepositoryError:
+            return False
+
+    sheet_dirs = list(filter(is_git_dir, os.listdir(ext_dir)))
+    sheet_dirs.sort()
+
+    if sheet_dirs:
+        print("installed repository:")
+        for sheet in filter(is_git_dir, os.listdir(ext_dir)):
+            print(sheet.replace("_", "/"))
+    else:
+        print("there is no repository installed")
 
 
 def info(repo):

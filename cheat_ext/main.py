@@ -1,6 +1,6 @@
 import argparse
 
-from cheat_ext.info import info
+from cheat_ext.info import info, ls
 from cheat_ext.installer import (
     install, upgrade, remove
 )
@@ -26,6 +26,10 @@ def _info(args):
     info(args.repository)
 
 
+def _ls(args):
+    ls()
+
+
 parser = argparse.ArgumentParser(description="cheat extension")
 
 subparsers = parser.add_subparsers()
@@ -46,6 +50,9 @@ remove_parser.set_defaults(func=_remove)
 info_parser = subparsers.add_parser("info")
 info_parser.add_argument("repository", type=str)
 info_parser.set_defaults(func=_info)
+
+ls_parser = subparsers.add_parser("ls")
+ls_parser.set_defaults(func=_ls)
 
 
 def main():

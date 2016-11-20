@@ -13,17 +13,21 @@ def get_github_url(repo):
     return _GITHUB_URL + "/" + repo + ".git"
 
 
-def get_sheet_path(repo):
-    return os.path.join(
-        get_cheat_path(),
-        ".ext",
-        repo.replace("/", "_"))
-
-
 def get_cheat_path():
     return os.path.join(
         os.path.expanduser("~"),
         ".cheat")
+
+
+def get_ext_path():
+    return os.path.join(
+        get_cheat_path(), ".ext")
+
+
+def get_sheet_path(repo):
+    return os.path.join(
+        get_ext_path(),
+        repo.replace("/", "_"))
 
 
 def get_available_sheets_at(sheet_dir):
