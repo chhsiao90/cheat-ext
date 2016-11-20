@@ -1,5 +1,6 @@
 import argparse
 
+from cheat_ext.info import info
 from cheat_ext.installer import (
     install, upgrade, remove
 )
@@ -21,6 +22,10 @@ def _remove(args):
     remove(args.repository)
 
 
+def _info(args):
+    info(args.repository)
+
+
 parser = argparse.ArgumentParser(description="cheat extension")
 
 subparsers = parser.add_subparsers()
@@ -37,6 +42,10 @@ upgrade_parser.set_defaults(func=_upgrade)
 remove_parser = subparsers.add_parser("remove")
 remove_parser.add_argument("repository", type=str)
 remove_parser.set_defaults(func=_remove)
+
+info_parser = subparsers.add_parser("info")
+info_parser.add_argument("repository", type=str)
+info_parser.set_defaults(func=_info)
 
 
 def main():
