@@ -1,7 +1,7 @@
 cheat-ext
 =========
 
-|Build Status| |Coverage Status|
+|Build Status| |Coverage Status| |PyPI| |PyPI|
 
 An extension of `cheat <https://github.com/chrisallenlane/cheat>`__
 Provide simple methodology to extends cheatsheets
@@ -41,3 +41,7 @@ Available cheatsheets
    :target: https://travis-ci.org/chhsiao90/cheat-ext
 .. |Coverage Status| image:: https://coveralls.io/repos/github/chhsiao90/cheat-ext/badge.svg?branch=master
    :target: https://coveralls.io/github/chhsiao90/cheat-ext?branch=master
+.. |PyPI| image:: https://img.shields.io/pypi/v/cheat-ext.svg
+   :target: https://pypi.python.org/pypi/cheat-ext/
+.. |PyPI| image:: https://img.shields.io/pypi/dm/cheat-ext.svg
+   :target: https://pypi.python.org/pypi/cheat-ext/
