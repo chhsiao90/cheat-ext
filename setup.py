@@ -39,7 +39,7 @@ setup(
         ],
     },
     install_requires=[
-        "GitPython==2.1.0",
+        "GitPython==3.1.37",
     ],
     extras_require={
         "dev": [
